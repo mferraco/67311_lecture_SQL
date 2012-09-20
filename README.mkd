@@ -1,0 +1,5 @@
+67311 Lectures on SQL
+------------
+In order to make it easier for students to focus on lecture and how the code is working, I am posting all the SQL code I demo during the lectures, along with a copy of the database(s) they were run against in class.  There are not a lot of comments on these, but as you try them out yourselves and look at any notes you have, you will be able to recall key points made about each set of queries.
+
+Each set of lectures has its own directory containing both the code and the database(s).  Before using the pg_dump file to recreate the database, remember to change the ownership from 'profh' to your user.
