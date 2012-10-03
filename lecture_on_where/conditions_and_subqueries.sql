@@ -97,10 +97,10 @@ SELECT hero_id FROM heroes WHERE name = 'Green Lantern'
 )
 ) 
 ORDER BY last_name, first_name;
---------
+-------- same thing on one line...
 SELECT last_name, first_name FROM people WHERE person_id IN (SELECT person_id FROM identities WHERE hero_id = (SELECT hero_id FROM heroes WHERE name = 'Green Lantern')) ORDER BY last_name, first_name;
 
--- using IN
+-- using IN on a predefined set (not always from a subquery)
 SELECT * FROM heroes WHERE hero_id IN (4,5,6,8,9,10,11,12) ORDER BY name; -- Marvel Comics heroes
 SELECT * FROM heroes WHERE hero_id NOT IN (4,5,6,8,9,10,11,12) ORDER BY name; -- DC Comics heroes
 
