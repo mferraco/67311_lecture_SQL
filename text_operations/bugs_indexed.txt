@@ -1,0 +1,31 @@
+EXPLAIN ANALYZE SELECT id, summary FROM defects WHERE summary ILIKE '%concept%';
+"Seq Scan on defects  (cost=0.00..511109.12 rows=326334 width=38) (actual time=477.372..242259.971 rows=45292 loops=1)"
+"  Filter: ((summary)::text ~~* '%concept%'::text)"
+"Total runtime: 242270.997 ms  (just over 4 minutes)"
+
+
+
+------------------------------------------------------------
+EXPLAIN ANALYZE SELECT id, summary FROM defects WHERE to_tsvector('english',summary) @@ to_tsquery('english','concept');
+
+"Bitmap Heap Scan on defects  (cost=587.22..147778.42 rows=54092 width=38) (actual time=1270.440..166098.049 rows=45292 loops=1)"
+"  Recheck Cond: (to_tsvector('english'::regconfig, (summary)::text) @@ '''concept'''::tsquery)"
+"  ->  Bitmap Index Scan on defects_fti_summary  (cost=0.00..573.69 rows=54092 width=0) (actual time=1220.560..1220.560 rows=63720 loops=1)"
+"        Index Cond: (to_tsvector('english'::regconfig, (summary)::text) @@ '''concept'''::tsquery)"
+"Total runtime: 166121.986 ms (just over 2 min, 45 sec -- saving 75 seconds)"
+
+
+
+------------------------------------------------------------
+EXPLAIN ANALYZE SELECT id, summary FROM defects WHERE vector_summary @@ to_tsquery('english','concept');
+
+"Bitmap Heap Scan on defects  (cost=7299.21..154355.18 rows=54092 width=38) (actual time=633.087..39176.307 rows=45292 loops=1)"
+"  Recheck Cond: (vector_summary @@ '''concept'''::tsquery)"
+"  ->  Bitmap Index Scan on defects_fti_vector_summary  (cost=0.00..7285.69 rows=54092 width=0) (actual time=611.594..611.594 rows=45292 loops=1)"
+"        Index Cond: (vector_summary @@ '''concept'''::tsquery)"
+"Total runtime: 39199.045 ms (just under 40 seconds -- blows everything else away)"
+
+
+
+
+
